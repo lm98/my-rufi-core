@@ -13,15 +13,6 @@ use crate::core::path::path::path::Path;
 use crate::core::path::slot::slot::Slot;
 
 impl Slot {
-    ///Takes another Slot and returns a Path
-    #[inline]
-    fn concat(self, other: Slot) -> Path {
-        let mut path = Path::new();
-        path.push(self);
-        path.push(other);
-        path
-    }
-
     pub fn to_str(&self) -> String {
         match self {
             Slot::Nbr(nbr) => "Nbr(".to_owned()+&nbr.to_string()+")",
