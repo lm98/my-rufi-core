@@ -9,7 +9,6 @@ pub mod slot {
 }
 
 use std::fmt::Display;
-use crate::core::path::path::path::Path;
 use crate::core::path::slot::slot::Slot;
 
 impl Slot {
