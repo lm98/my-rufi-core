@@ -50,19 +50,16 @@ impl Path {
     }
 
     pub fn to_str(&self) -> String {
-        let mut result = String::from("P://");
-        let separator = "/";
-        for slot in &self.slots {
-            result.push_str(&(slot.to_str() + separator));
-        }
-        result
+        let result = &self.slots;
+        "P://".to_owned() +
+            &result.into_iter().map(|slot| slot.to_str()).collect::<Vec<String>>().join("/")
     }
 }
 
 #[cfg(test)]
 mod tests {
     use crate::core::path::path::path::Path;
-    use crate::core::path::slot::slot::Slot::{Nbr, Rep};
+    use crate::core::path::slot::slot::Slot::{Nbr, Rep, Branch};
 
     #[test]
     fn test_is_root() {
@@ -76,6 +73,7 @@ mod tests {
         path.push(Rep(0));
         path.push(Nbr(0));
         path.push(Nbr(1));
-        assert_eq!(path.to_str(), "P://Rep(0)/Nbr(0)/Nbr(1)/")
+        path.push(Branch(0));
+        assert_eq!(path.to_str(), "P://Rep(0)/Nbr(0)/Nbr(1)/Branch(0)")
     }
 }
