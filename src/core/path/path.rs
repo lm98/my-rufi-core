@@ -68,7 +68,8 @@ mod tests {
 
     #[test]
     fn test_push() {
-        let path = Path::new(vec![Rep(0), Nbr(0), Nbr(1), Branch(0)]);
+        let mut path = Path::new(vec![Rep(0), Nbr(0), Nbr(1)]);
+        path.push(Branch(0));
         assert_eq!(path.slots, vec![Rep(0), Nbr(0), Nbr(1), Branch(0)])
     }
 
