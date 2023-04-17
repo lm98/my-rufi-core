@@ -4,7 +4,7 @@ use crate::core::path::slot::slot::Slot;
 pub mod path {
     use crate::core::path::slot::slot::Slot;
 
-    /// A Path is a collection of Slots that behave like a stack
+    /// A Path is a collection of Slots that behave like an immutable stack
     #[derive(PartialEq, Debug, Clone)]
     pub struct Path {
         pub slots: Vec<Slot>,
@@ -27,25 +27,25 @@ impl Path {
         self.slots.first()
     }
 
-    /// Push a Slot to the Path
-    pub fn push(&mut self, slot: Slot) {
-        self.slots.push(slot);
+    /// Push a Slot into the Path
+    pub fn push(&self, slot: Slot) -> Self {
+        Self {
+            slots: [&self.slots[..], &[slot]].concat(),
+        }
     }
 
-    /// Get the last Slot of the Path
-    pub fn pull(&mut self) -> Option<Slot> {
-        if self.slots.is_empty() {
-            None
-        } else {
-            Some(self.slots.remove(self.slots.len() - 1))
+    /// Remove the first Slot from the Path
+    pub fn pull(&self) -> Self {
+        Self {
+            slots: self.slots[..self.slots.len() - 1].to_vec(),
         }
     }
 
     pub fn to_str(&self) -> String {
-        let result = &self.slots;
+        let slots = &self.slots;
         let path = String::from("P://");
         path +
-            &result.into_iter().map(|slot| slot.to_str()).collect::<Vec<String>>().join("/")
+            &slots.into_iter().map(|slot| slot.to_str()).collect::<Vec<String>>().join("/")
     }
 }
 
@@ -68,15 +68,14 @@ mod tests {
 
     #[test]
     fn test_push() {
-        let mut path = Path::new(vec![Rep(0), Nbr(0), Nbr(1)]);
-        path.push(Branch(0));
+        let path = Path::new(vec![Rep(0), Nbr(0), Nbr(1)]).push(Branch(0));
         assert_eq!(path.slots, vec![Rep(0), Nbr(0), Nbr(1), Branch(0)])
     }
 
     #[test]
     fn test_pull() {
-        let mut path = Path::new(vec![Rep(0), Nbr(0), Nbr(1), Branch(0)]);
-        assert_eq!(path.pull(), Some(Branch(0)))
+        let path = Path::new(vec![Rep(0), Nbr(0), Nbr(1), Branch(0)]);
+        assert_eq!(path.pull(), Path::new(vec![Rep(0), Nbr(0), Nbr(1)]))
     }
 
     #[test]
