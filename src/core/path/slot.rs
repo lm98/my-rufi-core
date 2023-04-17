@@ -1,6 +1,6 @@
 pub mod slot {
     /// A Slot can either be Nbr, Rep or Branch
-    #[derive(PartialEq, Debug)]
+    #[derive(PartialEq, Debug, Clone)]
     pub enum Slot {
         Nbr(i32),
         Rep(i32),
