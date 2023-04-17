@@ -1,6 +1,3 @@
-use crate::core::path::path::path::Path;
-use crate::core::path::slot::slot::Slot;
-
 pub mod path {
     use crate::core::path::slot::slot::Slot;
 
@@ -10,6 +7,9 @@ pub mod path {
         pub slots: Vec<Slot>,
     }
 }
+
+use crate::core::path::path::path::Path;
+use crate::core::path::slot::slot::Slot;
 
 impl Path {
     /// Factory method to create a new Path
