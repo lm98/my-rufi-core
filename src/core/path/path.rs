@@ -13,8 +13,8 @@ pub mod path {
 
 impl Path {
     /// Factory method to create a new Path
-    pub fn new() -> Self {
-        Path { slots: Vec::new() }
+    pub fn new(slots: Vec<Slot>) -> Self {
+        Path { slots }
     }
 
     /// Check if the Path is empty
@@ -56,47 +56,31 @@ mod tests {
 
     #[test]
     fn test_is_root() {
-        let path = Path::new();
+        let path = Path::new(Vec::new());
         assert!(path.is_root())
     }
 
     #[test]
     fn test_head() {
-        let mut path = Path::new();
-        path.push(Rep(0));
-        path.push(Nbr(0));
-        path.push(Nbr(1));
-        path.push(Branch(0));
+        let path = Path::new(vec![Rep(0), Nbr(0), Nbr(1), Branch(0)]);
         assert_eq!(path.head(), Some(&Rep(0)))
     }
 
     #[test]
     fn test_push() {
-        let mut path = Path::new();
-        path.push(Rep(0));
-        path.push(Nbr(0));
-        path.push(Nbr(1));
-        path.push(Branch(0));
+        let path = Path::new(vec![Rep(0), Nbr(0), Nbr(1), Branch(0)]);
         assert_eq!(path.slots, vec![Rep(0), Nbr(0), Nbr(1), Branch(0)])
     }
 
     #[test]
     fn test_pull() {
-        let mut path = Path::new();
-        path.push(Rep(0));
-        path.push(Nbr(0));
-        path.push(Nbr(1));
-        path.push(Branch(0));
+        let mut path = Path::new(vec![Rep(0), Nbr(0), Nbr(1), Branch(0)]);
         assert_eq!(path.pull(), Some(Branch(0)))
     }
 
     #[test]
     fn test_to_str() {
-        let mut path = Path::new();
-        path.push(Rep(0));
-        path.push(Nbr(0));
-        path.push(Nbr(1));
-        path.push(Branch(0));
+        let path = Path::new(vec![Rep(0), Nbr(0), Nbr(1), Branch(0)]);
         assert_eq!(path.to_str(), "P://Rep(0)/Nbr(0)/Nbr(1)/Branch(0)")
     }
 }
