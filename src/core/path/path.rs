@@ -12,41 +12,33 @@ pub mod path {
 }
 
 impl Path {
+    /// Factory method to create a new Path
     pub fn new() -> Self {
         Path { slots: Vec::new() }
     }
 
+    /// Check if the Path is empty
     pub fn is_root(&self) -> bool {
         self.slots.is_empty()
     }
 
+    /// Get the first Slot of the Path
     pub fn head(&self) -> Option<&Slot> {
-        self.slots.get(0)
+        self.slots.pop_front()
     }
 
-    pub fn tail (&self) -> Option<&Slot> {
-        let last = self.slots.len() - 1;
-        self.slots.get(last)
-    }
-
+    /// Push a Slot to the Path
     pub fn push(&mut self, slot: Slot) {
         self.slots.push(slot);
     }
 
-    pub fn pop(&mut self) -> Option<Slot> {
-        self.slots.pop()
-    }
-
+    /// Get the last Slot of the Path
     pub fn pull(&mut self) -> Option<Slot> {
         if self.slots.is_empty() {
             None
         } else {
             Some(self.slots.remove(self.slots.len() - 1))
         }
-    }
-
-    pub fn reverse(&mut self) {
-        self.slots.reverse();
     }
 
     pub fn to_str(&self) -> String {
@@ -79,16 +71,6 @@ mod tests {
     }
 
     #[test]
-    fn test_tail() {
-        let mut path = Path::new();
-        path.push(Rep(0));
-        path.push(Nbr(0));
-        path.push(Nbr(1));
-        path.push(Branch(0));
-        assert_eq!(path.tail(), Some(&Branch(0)))
-    }
-
-    #[test]
     fn test_push() {
         let mut path = Path::new();
         path.push(Rep(0));
@@ -99,16 +81,6 @@ mod tests {
     }
 
     #[test]
-    fn test_pop() {
-        let mut path = Path::new();
-        path.push(Rep(0));
-        path.push(Nbr(0));
-        path.push(Nbr(1));
-        path.push(Branch(0));
-        assert_eq!(path.pop(), Some(Branch(0)))
-    }
-
-    #[test]
     fn test_pull() {
         let mut path = Path::new();
         path.push(Rep(0));
@@ -116,17 +88,6 @@ mod tests {
         path.push(Nbr(1));
         path.push(Branch(0));
         assert_eq!(path.pull(), Some(Branch(0)))
-    }
-
-    #[test]
-    fn test_reverse() {
-        let mut path = Path::new();
-        path.push(Rep(0));
-        path.push(Nbr(0));
-        path.push(Nbr(1));
-        path.push(Branch(0));
-        path.reverse();
-        assert_eq!(path.slots, vec![Branch(0), Nbr(1), Nbr(0), Rep(0)])
     }
 
     #[test]
