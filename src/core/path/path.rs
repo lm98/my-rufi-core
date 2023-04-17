@@ -51,7 +51,8 @@ impl Path {
 
     pub fn to_str(&self) -> String {
         let result = &self.slots;
-        "P://".to_owned() +
+        let path = String::from("P://");
+        path +
             &result.into_iter().map(|slot| slot.to_str()).collect::<Vec<String>>().join("/")
     }
 }
@@ -65,6 +66,67 @@ mod tests {
     fn test_is_root() {
         let path = Path::new();
         assert!(path.is_root())
+    }
+
+    #[test]
+    fn test_head() {
+        let mut path = Path::new();
+        path.push(Rep(0));
+        path.push(Nbr(0));
+        path.push(Nbr(1));
+        path.push(Branch(0));
+        assert_eq!(path.head(), Some(&Rep(0)))
+    }
+
+    #[test]
+    fn test_tail() {
+        let mut path = Path::new();
+        path.push(Rep(0));
+        path.push(Nbr(0));
+        path.push(Nbr(1));
+        path.push(Branch(0));
+        assert_eq!(path.tail(), Some(&Branch(0)))
+    }
+
+    #[test]
+    fn test_push() {
+        let mut path = Path::new();
+        path.push(Rep(0));
+        path.push(Nbr(0));
+        path.push(Nbr(1));
+        path.push(Branch(0));
+        assert_eq!(path.slots, vec![Rep(0), Nbr(0), Nbr(1), Branch(0)])
+    }
+
+    #[test]
+    fn test_pop() {
+        let mut path = Path::new();
+        path.push(Rep(0));
+        path.push(Nbr(0));
+        path.push(Nbr(1));
+        path.push(Branch(0));
+        assert_eq!(path.pop(), Some(Branch(0)))
+    }
+
+    #[test]
+    fn test_pull() {
+        let mut path = Path::new();
+        path.push(Rep(0));
+        path.push(Nbr(0));
+        path.push(Nbr(1));
+        path.push(Branch(0));
+        assert_eq!(path.pull(), Some(Branch(0)))
+    }
+
+    #[test]
+    fn test_reverse() {
+        let mut path = Path::new();
+        path.push(Rep(0));
+        path.push(Nbr(0));
+        path.push(Nbr(1));
+        path.push(Branch(0));
+        path.reverse();
+        assert_eq!(path.slots, vec![Branch(0), Nbr(1), Nbr(0), Rep(0)])
     }
 
     #[test]
