@@ -24,7 +24,7 @@ impl Path {
 
     /// Get the first Slot of the Path
     pub fn head(&self) -> Option<&Slot> {
-        self.slots.pop_front()
+        self.slots.first()
     }
 
     /// Push a Slot to the Path
